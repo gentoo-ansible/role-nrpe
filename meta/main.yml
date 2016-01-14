@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  author: Jakub Jirutka
+  company: CTU in Prague
+  description: Install and configure Nagios NRPE
+  license: MIT
+  min_ansible_version: 1.9
+  platforms:
+    - name: Gentoo
+  categories:
+    - system

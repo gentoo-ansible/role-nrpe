@@ -1,0 +1,40 @@
+---
+# Port number we should wait for connections on.
+nrpe_port: 5666
+
+# Comma-delimited list of IP address or hostnames that are allowed to talk
+# to the NRPE daemon.
+nrpe_allowed_hosts: []
+
+# Mapping of command definitions that this daemon will run.
+# The mapping key is a command name, the value is a command line.
+# If the command is a core plugin or a plugin installed in {{nrpe_plugins_dir}},
+# then absolute path is not necessary, use just a filename (it will be
+# automatically prefixed for nrpe.cfg).
+#
+# Example:
+#   check_swap: check_swap -w 60% -c 30%
+#   check_postgres: check_postgres --action=connection
+#   check_lemur: /home/hody/nrpe/check_lemur --alive
+nrpe_commands:
+  # free disk space: warn <20%, critical <8% / inodes: warm <20%, critical <8%
+  check_disk: check_disk -w 20% -c 8% -W 20% -K 8% --mountpoint --exclude-type=tmpfs
+  # free swap space: warn <60%, critical <30%
+  check_swap: check_swap -w 60% -c 30%
+  check_load: "check_load \
+    -w {{ ansible_processor_vcpus * 1.5 }},{{ ansible_processor_vcpus }},{{ ansible_processor_vcpus * 0.7 }} \
+    -c {{ ansible_processor_vcpus * 3 }},{{ ansible_processor_vcpus * 1.5 }},{{ ansible_processor_vcpus * 0.9 }}"
+  check_procs: check_procs -w 400 -c 500 -s DRSTZ
+  check_zombie_procs: check_procs -w 3 -c 10 -s Z
+  check_syslog_procs: 'check_procs -c 2: --command=syslog-ng'
+
+# List of custom NRPE plugins to install.
+# The list item must be a mapping with "name" and "url" of a file to download.
+# Plugins will be stored in {{nrpe_plugins_dir}}.
+#
+# Example:
+#   - { name: check_postgres, url: "https://.../check_postgres.pl" }
+nrpe_plugins: []
+
+# Path to the directory where to store custom plugins.
+nrpe_plugins_dir: /usr/local/lib/nagios/plugins
