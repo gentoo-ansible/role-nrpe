@@ -17,8 +17,9 @@ nrpe_allowed_hosts: []
 #   check_postgres: check_postgres --action=connection
 #   check_lemur: /home/hody/nrpe/check_lemur --alive
 nrpe_commands:
-  # free disk space: warn <20%, critical <8% / inodes: warm <20%, critical <8%
-  check_disk: check_disk -w 20% -c 8% -W 20% -K 8% --mountpoint --exclude-type=tmpfs
+  # free disk space: warn <20%, critical <8% / inodes: warm <20%, critical <8%,
+  # exclude-type: tmpfs, devtmpfs, none (binds)
+  check_disk: check_disk -w 20% -c 8% -W 20% -K 8% -X tmpfs -X devtmpfs -X none
   # free swap space: warn <60%, critical <30%
   check_swap: check_swap -w 60% -c 30%
   check_load: "check_load \
