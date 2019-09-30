@@ -105,7 +105,7 @@ connection_timeout=300
 {% for name, cmd in nrpe_commands | dictsort %}
 {# Command with core plugin. #}
 {%   if cmd.split(' ')[0] in _nrpe_core_plugins.stdout_lines %}
-command[{{ name }}]=/usr/lib/nagios/plugins/{{ cmd }}
+command[{{ name }}]={{ nrpe_libdir }}/nagios/plugins/{{ cmd }}
 {# Command with absolute path. #}
 {%   elif cmd.startswith('/') %}
 command[{{ name }}]={{ cmd }}
