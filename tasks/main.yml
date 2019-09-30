@@ -1,4 +1,10 @@
 ---
+
+- name: set nrpe_libdir fact
+  set_fact:
+    nrpe_libdir: |-
+      {% if ansible_architecture == 'x86_64' %}/usr/lib64{% else %}/usr/lib{% endif %}
+
 - name: install net-analyzer/nrpe
   portage: package=net-analyzer/nrpe
 
@@ -17,7 +23,7 @@
   with_items: nrpe_plugins
 
 - name: register list of core plugins
-  command: ls /usr/lib/nagios/plugins
+  command: ls {{ nrpe_libdir }}/nagios/plugins
   register: _nrpe_core_plugins
 
 - name: configure nrpe
