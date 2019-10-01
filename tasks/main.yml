@@ -3,11 +3,13 @@
   portage: package=net-analyzer/nrpe
 
 - name: prepare directory for local plugins
-  file: >
-    state=directory
-    path={{ nrpe_plugins_dir }}
-    owner=root group=root mode=0755
-  when: nrpe_plugins
+  file:
+    state: directory
+    path: "{{ nrpe_plugins_dir }}"
+    owner: root
+    group: root
+    mode: 0755
+  when: nrpe_plugins is defined
 
 - name: download plugins
   get_url: >
