@@ -1,6 +1,7 @@
 ---
 - name: install net-analyzer/nrpe
-  portage: package=net-analyzer/nrpe
+  portage:
+    package: net-analyzer/nrpe
 
 - name: prepare directory for local plugins
   file:
@@ -25,11 +26,16 @@
   register: _nrpe_core_plugins
 
 - name: configure nrpe
-  template: >
-    src=nrpe.cfg.j2
-    dest=/etc/nagios/nrpe.cfg
-    owner=root group=nagios mode=0640
+  template:
+    src: nrpe.cfg.j2
+    dest: /etc/nagios/nrpe.cfg
+    owner: root
+    group: nagios
+    mode: 0640
   notify: restart nrpe
 
 - name: enable and start nrpe daemon
-  service: name=nrpe enabled=yes state=started
+  service:
+    name: nrpe
+    enabled: yes
+    state: started
