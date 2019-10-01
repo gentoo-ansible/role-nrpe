@@ -12,11 +12,13 @@
   when: nrpe_plugins is defined
 
 - name: download plugins
-  get_url: >
-    url={{ item.url }}
-    dest={{ nrpe_plugins_dir }}/{{ item.name }}
-    owner=root group=root mode=0755
-  with_items: nrpe_plugins
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ nrpe_plugins_dir }}/{{ item.name }}"
+    owner: root
+    group: root
+    mode: 0755
+  with_items: "{{ nrpe_plugins }}"
 
 - name: register list of core plugins
   command: ls /usr/lib/nagios/plugins
